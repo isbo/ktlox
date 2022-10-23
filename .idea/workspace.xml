@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f05cc0a-afee-416a-bd20-447798cfecc2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/KotlinJavaRuntime.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ktlox.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Main.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Scanner.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Token.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/TokenType.kt" afterDir="false" />
+    <list default="true" id="7f05cc0a-afee-416a-bd20-447798cfecc2" name="Changes" comment="tokenizer - part 1 - operators and string literals">
+      <change afterPath="$PROJECT_DIR$/src/test/kotlin/io/github/isbo/ktlox/ScannerTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ktlox.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ktlox.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Scanner.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Scanner.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Token.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Token.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/TokenType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/TokenType.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -29,6 +35,7 @@
         <option value="Class" />
         <option value="Kotlin Enum" />
         <option value="Kotlin Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -48,13 +55,27 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Downloaded.Files.Path.Enabled": "true",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "settings.editor.selected.configurable": "com.maddyhome.idea.vim.ui.VimEmulationConfigurable"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="io.github.isbo.ktlox" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.ScannerTest (2)">
     <configuration name="Ktlox" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="io.github.isbo.ktlox.MainKt" />
       <module name="ktlox" />
@@ -62,6 +83,90 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ScannerTest (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ktlox" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.github.isbo.ktlox.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="io.github.isbo.ktlox" />
+      <option name="MAIN_CLASS_NAME" value="io.github.isbo.ktlox.ScannerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ScannerTest (2)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ktlox" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.github.isbo.ktlox.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="io.github.isbo.ktlox" />
+      <option name="MAIN_CLASS_NAME" value="io.github.isbo.ktlox.ScannerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ScannerTest (4)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ktlox" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.github.isbo.ktlox.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="io.github.isbo.ktlox" />
+      <option name="MAIN_CLASS_NAME" value="io.github.isbo.ktlox.ScannerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ScannerTest (5)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ktlox" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.github.isbo.ktlox.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="io.github.isbo.ktlox" />
+      <option name="MAIN_CLASS_NAME" value="io.github.isbo.ktlox.ScannerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ScannerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ktlox" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.github.isbo.ktlox.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="io.github.isbo.ktlox" />
+      <option name="MAIN_CLASS_NAME" value="io.github.isbo.ktlox.ScannerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.ScannerTest (2)" />
+        <item itemvalue="JUnit.ScannerTest (1)" />
+        <item itemvalue="JUnit.ScannerTest" />
+        <item itemvalue="JUnit.ScannerTest (5)" />
+        <item itemvalue="JUnit.ScannerTest (4)" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -120,7 +225,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Scanner.kt</url>
-          <line>47</line>
+          <line>42</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>

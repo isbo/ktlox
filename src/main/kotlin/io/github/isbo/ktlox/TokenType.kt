@@ -1,6 +1,6 @@
 package io.github.isbo.ktlox
 
-enum class TokenType {
+enum class TokenType(val keyword: String? = null) {
     // Single-character tokens.
     LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE,
     COMMA, DOT, MINUS, PLUS, SEMICOLON, SLASH, STAR,
@@ -15,8 +15,15 @@ enum class TokenType {
     IDENTIFIER, STRING, NUMBER,
 
     // Keywords.
-    AND, CLASS, ELSE, FALSE, FUN, FOR, IF, NIL, OR,
-    PRINT, RETURN, SUPER, THIS, TRUE, VAR, WHILE,
+    AND("and"), CLASS("class"), ELSE("else"), FALSE("false"),
+    FUN("fun"), FOR("for"), IF("if"), NIL("nil"), OR("or"),
+    PRINT("print"), RETURN("return"), SUPER("super"), THIS("this"), 
+    TRUE("true"), VAR("var"), WHILE("while"),
 
-    EOF
+    EOF;
+    companion object {
+        private val KEYWORDS = values().filter {  it.keyword != null }.associateBy { it.keyword }
+        fun getKeyword(token: String?) = KEYWORDS[token]
+    }
+
 }

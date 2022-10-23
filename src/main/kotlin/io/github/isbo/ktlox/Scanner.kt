@@ -17,11 +17,6 @@ class Scanner(private val source: String) {
         return tokens
     }
 
-    private fun addToken(type: TokenType, literal: Any?) {
-        val text = source.substring(start until current)
-        tokens.add(Token(type, text, literal, line))
-    }
-
     private fun scanToken() {
         val c = advance()
         when(c) {
@@ -55,22 +50,35 @@ class Scanner(private val source: String) {
             // literals
             '"' -> tokenizeString()
 
-            // keywords
-
             else -> {
-                if (c.isDigit()) tokenizeNumber()
-                else if (c.isLetter()) tokenizeIdentifer()
+                if (isDigit(c)) tokenizeNumber()
+                else if (isAlphabet(c)) tokenizeIdentifier()
                 else error(line, "Unexpected character $c")
             }
         }
     }
 
-    private fun tokenizeIdentifer() {
-        TODO("Not yet implemented")
+    private fun tokenizeIdentifier() {
+        while (isAlphaNumeric(peek())) advance()
+        val id = source.substring(start until current)
+        val type: TokenType? = TokenType.getKeyword(id)
+        if (type == null) addToken(IDENTIFIER) else addToken(type)
     }
 
     private fun tokenizeNumber() {
-        TODO("Not yet implemented")
+        while (isDigit(peek())) advance()
+
+        if (peek() == '.') {
+            advance()
+
+            // errata - don't allow trailing dot at all
+            if (isDigit(peek())) {
+                while (isDigit(peek())) advance()
+            } else {
+                error(line, "Invalid number with trailing dot")
+            }
+        }
+        addToken(NUMBER, source.substring(start until current).toDouble())
     }
 
     private fun tokenizeString() {
@@ -99,11 +107,21 @@ class Scanner(private val source: String) {
         return true
     }
 
-    private fun addToken(type: TokenType) = addToken(type, null)
-
     private fun advance() = source[current++]
 
     private fun isAtEnd() = current >= source.length
 
+    private fun addToken(type: TokenType) = addToken(type, null)
+
+    private fun addToken(type: TokenType, literal: Any?) {
+        val text = source.substring(start until current)
+        tokens.add(Token(type, text, literal, line))
+    }
+
+    private fun isAlphabet(c: Char) = c in 'a'..'z' || c in 'A'..'Z' || c == '_'
+
+    private fun isDigit(c: Char) = c in '0'..'9'
+
+    private fun isAlphaNumeric(c: Char) = isAlphabet(c) || isDigit(c)
 
 }
