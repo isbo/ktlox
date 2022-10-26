@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f05cc0a-afee-416a-bd20-447798cfecc2" name="Changes" comment="tokenize numbers, identifiers, added scanner test">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Expression.kt" afterDir="false" />
+    <list default="true" id="7f05cc0a-afee-416a-bd20-447798cfecc2" name="Changes" comment="expression parser sans tests, error recovery">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Parser.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/kotlin/io/github/isbo/ktlox/ParserTest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Expression.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Expr.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Main.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,8 +33,8 @@
       <list>
         <option value="Class" />
         <option value="Kotlin Enum" />
-        <option value="JUnit5 Test Class" />
         <option value="Kotlin Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -71,7 +74,7 @@
       <recent name="io.github.isbo.ktlox" />
     </key>
   </component>
-  <component name="RunManager" selected="Kotlin.ExpressionKt">
+  <component name="RunManager" selected="JUnit.ParserTest (3)">
     <configuration name="Ktlox" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="io.github.isbo.ktlox.MainKt" />
       <module name="ktlox" />
@@ -79,7 +82,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ScannerTest (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ParserTest (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ktlox" />
       <extension name="coverage">
         <pattern>
@@ -88,13 +91,13 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="io.github.isbo.ktlox" />
-      <option name="MAIN_CLASS_NAME" value="io.github.isbo.ktlox.ScannerTest" />
+      <option name="MAIN_CLASS_NAME" value="io.github.isbo.ktlox.ParserTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ScannerTest (2)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ParserTest (2)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ktlox" />
       <extension name="coverage">
         <pattern>
@@ -103,13 +106,13 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="io.github.isbo.ktlox" />
-      <option name="MAIN_CLASS_NAME" value="io.github.isbo.ktlox.ScannerTest" />
+      <option name="MAIN_CLASS_NAME" value="io.github.isbo.ktlox.ParserTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ScannerTest (5)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ParserTest (3)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ktlox" />
       <extension name="coverage">
         <pattern>
@@ -118,13 +121,13 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="io.github.isbo.ktlox" />
-      <option name="MAIN_CLASS_NAME" value="io.github.isbo.ktlox.ScannerTest" />
+      <option name="MAIN_CLASS_NAME" value="io.github.isbo.ktlox.ParserTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ScannerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ParserTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ktlox" />
       <extension name="coverage">
         <pattern>
@@ -133,14 +136,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="io.github.isbo.ktlox" />
-      <option name="MAIN_CLASS_NAME" value="io.github.isbo.ktlox.ScannerTest" />
+      <option name="MAIN_CLASS_NAME" value="io.github.isbo.ktlox.ParserTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ExpressionKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="io.github.isbo.ktlox.ExpressionKt" />
+    <configuration name="ExprKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="io.github.isbo.ktlox.ExprKt" />
       <module name="ktlox" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -148,11 +151,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Kotlin.ExpressionKt" />
-        <item itemvalue="JUnit.ScannerTest (2)" />
-        <item itemvalue="JUnit.ScannerTest (1)" />
-        <item itemvalue="JUnit.ScannerTest" />
-        <item itemvalue="JUnit.ScannerTest (5)" />
+        <item itemvalue="JUnit.ParserTest (3)" />
+        <item itemvalue="JUnit.ParserTest (2)" />
+        <item itemvalue="JUnit.ParserTest (1)" />
+        <item itemvalue="JUnit.ParserTest" />
+        <item itemvalue="Kotlin.ExprKt" />
       </list>
     </recent_temporary>
   </component>
@@ -172,7 +175,14 @@
       <option name="project" value="LOCAL" />
       <updated>1666508908956</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="expression AST objects">
+      <created>1666750682009</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1666750682009</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -218,6 +228,19 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="tokenize numbers, identifiers, added scanner test" />
-    <option name="LAST_COMMIT_MESSAGE" value="tokenize numbers, identifiers, added scanner test" />
+    <MESSAGE value="expression AST objects" />
+    <MESSAGE value="expression parser sans tests, error recovery" />
+    <option name="LAST_COMMIT_MESSAGE" value="expression parser sans tests, error recovery" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Parser.kt</url>
+          <line>13</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

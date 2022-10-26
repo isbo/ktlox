@@ -45,7 +45,10 @@ private fun runPrompt() {
 fun error(line: Int, message: String) {
     report(line, "", message)
 }
-
+fun error(token: Token, message: String) {
+    val where = if (token.type == TokenType.EOF) "end" else token.lexeme
+    report(token.line, " at $where", message)
+}
 fun report(line: Int, where: String, message: String) {
     System.err.println("[line $line] $where: $message")
     hadError = true
