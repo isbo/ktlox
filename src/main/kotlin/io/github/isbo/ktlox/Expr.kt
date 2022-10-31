@@ -2,10 +2,10 @@ package io.github.isbo.ktlox
 
 sealed class Expr
 
-class BinaryExpr(val left: Expr, val operator: Token, val right: Expr) : Expr()
-class UnaryExpr(val operator: Token, val right: Expr) : Expr()
-class LiteralExpr(val value: Any?) : Expr()
-class GroupingExpr(val expr: Expr) : Expr()
+data class BinaryExpr(val left: Expr, val operator: Token, val right: Expr) : Expr()
+data class UnaryExpr(val operator: Token, val right: Expr) : Expr()
+data class LiteralExpr(val value: Any?) : Expr()
+data class GroupingExpr(val expr: Expr) : Expr()
 
 fun Expr.astPrinter(): String {
     return when(this) {

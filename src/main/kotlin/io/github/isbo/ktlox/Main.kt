@@ -28,9 +28,12 @@ private fun run(source: String) {
     val scanner = Scanner(source)
     val tokens = scanner.scanTokens()
 
-    for (token in tokens) {
-        println(token)
+    val parser = Parser(tokens)
+    val expr = parser.parse()
+    if (hadError) {
+        return
     }
+    print(expr!!.astPrinter())
 }
 
 private fun runPrompt() {
