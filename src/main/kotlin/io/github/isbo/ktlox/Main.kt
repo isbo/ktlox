@@ -6,6 +6,7 @@ import java.nio.file.Path
 import kotlin.system.exitProcess
 
 var hadError = false
+var hadRuntimeError = false
 
 fun main(args: Array<String>) {
     if (args.size > 1) {
@@ -22,6 +23,7 @@ private fun runFile(fileName: String) {
     val content = Files.readString(Path.of(fileName), Charset.defaultCharset())
     run(content)
     if (hadError) exitProcess(65)
+    if (hadRuntimeError) exitProcess(70)
 }
 
 private fun run(source: String) {
@@ -34,6 +36,8 @@ private fun run(source: String) {
         return
     }
     print(expr!!.astPrinter())
+    val interpreter = Interpreter()
+    interpreter.interpret(expr)
 }
 
 private fun runPrompt() {
@@ -51,6 +55,10 @@ fun error(line: Int, message: String) {
 fun error(token: Token, message: String) {
     val where = if (token.type == TokenType.EOF) "end" else token.lexeme
     report(token.line, " at $where", message)
+}
+fun runtimeError(e: RuntimeError) {
+    System.err.println("[line ${e.token.line}]: ${e.message}")
+    hadRuntimeError = true
 }
 fun report(line: Int, where: String, message: String) {
     System.err.println("[line $line] $where: $message")
