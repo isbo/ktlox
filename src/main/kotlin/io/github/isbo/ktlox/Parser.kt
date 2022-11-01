@@ -17,7 +17,20 @@ class Parser(val tokens: List<Token>) {
     }
 
     private fun expression(): Expr {
-        return comma()
+        return ternary()
+    }
+
+    private fun ternary(): Expr {
+        var expr = comma()
+
+        if (match(QUESTION)) {
+            val operator = previous()
+            val trueExpr = comma()
+            consumeOrThrow(COLON, "Expected ':' in ternary expression.")
+            val falseExpr = comma()
+            expr = TernaryExpr(operator, expr, trueExpr, falseExpr)
+        }
+        return expr
     }
 
     private fun comma(): Expr {

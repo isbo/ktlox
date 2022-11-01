@@ -69,4 +69,18 @@ internal class InterpreterTest {
         val result = expr?.evaluate()
         assertFalse(result as Boolean)
     }
+    @Test
+    fun evaluateTernaryExpressionTruePart() {
+        val scanner = Scanner("3.0>1.0 ? \"str\" == nil : 10/2*5")
+        val expr = Parser(scanner.scanTokens()).parse()
+        val result = expr?.evaluate()
+        assertFalse(result as Boolean)
+    }
+    @Test
+    fun evaluateTernaryExpressionFalsePart() {
+        val scanner = Scanner("3.0<1.0 ? \"str\" == nil : 15, 10/(2*5)")
+        val expr = Parser(scanner.scanTokens()).parse()
+        val result = expr?.evaluate()
+        assertEquals(1.0, result as Double)
+    }
 }

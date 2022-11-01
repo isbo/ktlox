@@ -4,7 +4,6 @@ import io.github.isbo.ktlox.TokenType.*
 import java.lang.ClassCastException
 import java.lang.RuntimeException
 
-
 class Interpreter {
     fun interpret(expr: Expr) {
         try {
@@ -21,12 +20,17 @@ class RuntimeError(val token: Token, override val message: String) : RuntimeExce
 // TODO: revisit and remove?
 fun Expr.evaluate(): Any? {
     return when (this) {
+        is TernaryExpr -> evaluate()
         is CommaExpr -> evaluate()
         is BinaryExpr -> evaluate()
         is UnaryExpr -> evaluate()
         is LiteralExpr -> value
         is GroupingExpr -> evaluate()
     }
+}
+
+fun TernaryExpr.evaluate(): Any? {
+    return if (condition.evaluate().isTruthy()) trueExpr.evaluate() else falseExpr.evaluate()
 }
 
 fun CommaExpr.evaluate(): Any? {
@@ -89,14 +93,14 @@ fun UnaryExpr.evaluate(): Any? {
         throw RuntimeError(operator, "Operand must be number")
     }
     if (operator.type == BANG) {
-        return !isTruthy(right)
+        return !right.isTruthy()
     }
     return null // unreachable
 }
 
-fun isTruthy(right: Any?): Boolean {
-    if (right == null) return false
-    if (right is Boolean) return right
+fun Any?.isTruthy(): Boolean {
+    if (this == null) return false
+    if (this is Boolean) return this
 
     return true
 }

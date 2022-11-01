@@ -21,4 +21,11 @@ internal class ParserTest {
         assertTrue(expr is CommaExpr)
         assertEquals(4, (expr as CommaExpr).expressions.size)
     }
+
+    @Test
+    fun scanTernaryExpression() {
+        val scanner = Scanner("3.0>1.0 ? \"str\" == nil : 10/2*5")
+        val expr = Parser(scanner.scanTokens()).parse()
+        assertTrue(expr is TernaryExpr)
+    }
 }
