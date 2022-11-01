@@ -43,7 +43,12 @@ fun BinaryExpr.evaluate(): Any? {
             }
 
             MINUS -> left as Double - right as Double
-            SLASH -> left as Double / right as Double
+            SLASH -> {
+                val denom = right as Double
+                if (denom == 0.0)
+                    throw RuntimeError(operator, "Denominator must be non-zero")
+                left as Double / right
+            }
             STAR -> left as Double * right as Double
             GREATER -> left as Double > right as Double
             GREATER_EQUAL -> left as Double >= right as Double

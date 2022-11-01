@@ -29,6 +29,7 @@ internal class InterpreterTest {
         val result = expr?.evaluate()
         assertEquals("onetwo", result as String)
     }
+
     @Test
     fun evaluateMixedStringConcat() {
         val scanner = Scanner("\"one\" + 2")
@@ -51,5 +52,14 @@ internal class InterpreterTest {
         val expr = Parser(scanner.scanTokens()).parse()
         val result = expr?.evaluate()
         assertFalse(result as Boolean)
+    }
+    @Test
+    fun evaluateDivByZero() {
+        val scanner = Scanner("5/(3-3.0)")
+        val expr = Parser(scanner.scanTokens()).parse()
+        val e = assertThrows(RuntimeError::class.java) {
+            expr?.evaluate()
+        }
+        assertEquals(TokenType.SLASH, e.token.type)
     }
 }
