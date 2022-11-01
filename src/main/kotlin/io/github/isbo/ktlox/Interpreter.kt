@@ -21,11 +21,21 @@ class RuntimeError(val token: Token, override val message: String) : RuntimeExce
 // TODO: revisit and remove?
 fun Expr.evaluate(): Any? {
     return when (this) {
+        is CommaExpr -> evaluate()
         is BinaryExpr -> evaluate()
         is UnaryExpr -> evaluate()
         is LiteralExpr -> value
         is GroupingExpr -> evaluate()
     }
+}
+
+fun CommaExpr.evaluate(): Any? {
+    // evaluate all, return last expression's value
+    var result: Any? = null
+    for (expr in expressions) {
+        result = expr.evaluate()
+    }
+    return result
 }
 
 fun BinaryExpr.evaluate(): Any? {

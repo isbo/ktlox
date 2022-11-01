@@ -3,7 +3,7 @@ package io.github.isbo.ktlox
 import io.github.isbo.ktlox.TokenType.*
 import java.lang.RuntimeException
 
-class ParseError : RuntimeException()
+class ParseError(val token: Token, override val message: String) : RuntimeException()
 
 class Parser(val tokens: List<Token>) {
     var current = 0
@@ -17,7 +17,18 @@ class Parser(val tokens: List<Token>) {
     }
 
     private fun expression(): Expr {
-        return equality()
+        return comma()
+    }
+
+    private fun comma(): Expr {
+        val expressions = mutableListOf<Expr>(equality())
+
+        var operator: Token? = null
+        while (match(COMMA)) {
+            operator = previous()
+            expressions.add(equality())
+        }
+        return if (operator == null) expressions[0] else CommaExpr(operator, expressions)
     }
 
     private fun equality(): Expr {
@@ -98,7 +109,7 @@ class Parser(val tokens: List<Token>) {
 
     private fun parseError(token: Token, message: String): ParseError {
         error(token, message)
-        return ParseError()
+        return ParseError(token, message)
     }
 
     private fun match(vararg tokenTypes: TokenType): Boolean {

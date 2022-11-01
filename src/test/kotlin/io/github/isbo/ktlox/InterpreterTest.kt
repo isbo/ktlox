@@ -62,4 +62,11 @@ internal class InterpreterTest {
         }
         assertEquals(TokenType.SLASH, e.token.type)
     }
+    @Test
+    fun evaluateCommaExpression() {
+        val scanner = Scanner("5+3*(-1/10), 52, 3.0>1.0, \"str\" == nil")
+        val expr = Parser(scanner.scanTokens()).parse()
+        val result = expr?.evaluate()
+        assertFalse(result as Boolean)
+    }
 }
