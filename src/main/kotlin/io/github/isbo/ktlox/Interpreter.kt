@@ -6,7 +6,6 @@ import java.lang.RuntimeException
 
 
 class Interpreter {
-
     fun interpret(expr: Expr) {
         try {
             val result = expr.evaluate()
@@ -38,8 +37,8 @@ fun BinaryExpr.evaluate(): Any? {
             PLUS -> {
                 if (left is Double && right is Double)
                     left + right
-                else if (left is String && right is String)
-                    left + right
+                else if (left is String || right is String)
+                    left.toString() + right.toString()
                 else throw RuntimeError(operator, "Operands must be numbers or strings")
             }
 

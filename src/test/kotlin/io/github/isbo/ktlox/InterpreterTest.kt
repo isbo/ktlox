@@ -29,6 +29,13 @@ internal class InterpreterTest {
         val result = expr?.evaluate()
         assertEquals("onetwo", result as String)
     }
+    @Test
+    fun evaluateMixedStringConcat() {
+        val scanner = Scanner("\"one\" + 2")
+        val expr = Parser(scanner.scanTokens()).parse()
+        val result = expr?.evaluate()
+        assertEquals("one2", result as String)
+    }
 
     @Test
     fun evaluateNullEquality() {
