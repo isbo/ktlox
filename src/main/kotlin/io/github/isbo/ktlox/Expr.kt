@@ -32,18 +32,3 @@ private fun parenthesize(name: String, vararg exprs: Expr): String {
 
     return builder.toString()
 }
-
-fun main() {
-    val expr: Expr = BinaryExpr(
-        UnaryExpr(
-            Token(TokenType.MINUS, "-", null, 1),
-            LiteralExpr(123)
-        ),
-        Token(TokenType.STAR, "*", null, 1),
-        GroupingExpr(
-            LiteralExpr(45.67)
-        )
-    )
-
-    print(expr.astPrinter())
-}

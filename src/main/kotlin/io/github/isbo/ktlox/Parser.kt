@@ -5,15 +5,30 @@ import java.lang.RuntimeException
 
 class ParseError(val token: Token, override val message: String) : RuntimeException()
 
-class Parser(val tokens: List<Token>) {
-    var current = 0
+class Parser(private val tokens: List<Token>) {
+    private var current = 0
 
-    fun parse(): Expr? {
-        return try {
-            expression()
-        } catch (error: ParseError) {
-            null
+    fun parse(): List<Stmt> {
+        val statements = mutableListOf<Stmt>()
+        while (!isAtEnd()) {
+            statements.add(statement())
         }
+        return statements
+    }
+
+    private fun statement(): Stmt {
+        return if (match(PRINT)) printStatement() else expressionStatement()
+    }
+    private fun expressionStatement(): Stmt {
+        val value = expression()
+        consumeOrThrow(SEMICOLON, "Expect ; after expression.")
+        return ExpressionStmt(value)
+    }
+
+    private fun printStatement(): Stmt {
+        val value = expression()
+        consumeOrThrow(SEMICOLON, "Expect ; after value.")
+        return PrintStmt(value)
     }
 
     private fun expression(): Expr {

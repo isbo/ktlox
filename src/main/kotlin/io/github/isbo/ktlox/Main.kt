@@ -31,13 +31,12 @@ private fun run(source: String) {
     val tokens = scanner.scanTokens()
 
     val parser = Parser(tokens)
-    val expr = parser.parse()
+    val statements = parser.parse()
     if (hadError) {
         return
     }
-    print(expr!!.astPrinter())
     val interpreter = Interpreter()
-    interpreter.interpret(expr)
+    interpreter.interpret(statements)
 }
 
 private fun runPrompt() {

@@ -5,10 +5,11 @@ import java.lang.ClassCastException
 import java.lang.RuntimeException
 
 class Interpreter {
-    fun interpret(expr: Expr) {
+    fun interpret(statements: List<Stmt>) {
         try {
-            val result = expr.evaluate()
-            print(result)
+            for (statement in statements) {
+                statement.execute()
+            }
         } catch (e: RuntimeError) {
             runtimeError(e)
         }
