@@ -5,12 +5,13 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 
 internal class InterpreterTest {
+    private val env = Environment()
 
     @Test
     fun evaluateNumeric() {
         val scanner = Scanner("(6*5+3-8)/5;")
         val expr = (Parser(scanner.scanTokens()).parse()[0] as ExpressionStmt).expression
-        val result = expr.evaluate()
+        val result = expr.evaluate(env)
         assertEquals(5.0, result as Double)
     }
 
@@ -18,7 +19,7 @@ internal class InterpreterTest {
     fun evaluateBoolean() {
         val scanner = Scanner("(6+1) >= 5;")
         val expr = (Parser(scanner.scanTokens()).parse()[0] as ExpressionStmt).expression
-        val result = expr.evaluate()
+        val result = expr.evaluate(env)
         assertTrue(result as Boolean)
     }
 
@@ -26,7 +27,7 @@ internal class InterpreterTest {
     fun evaluateStringConcat() {
         val scanner = Scanner("\"one\" + \"two\";")
         val expr = (Parser(scanner.scanTokens()).parse()[0] as ExpressionStmt).expression
-        val result = expr.evaluate()
+        val result = expr.evaluate(env)
         assertEquals("onetwo", result as String)
     }
 
@@ -34,7 +35,7 @@ internal class InterpreterTest {
     fun evaluateMixedStringConcat() {
         val scanner = Scanner("\"one\" + 2;")
         val expr = (Parser(scanner.scanTokens()).parse()[0] as ExpressionStmt).expression
-        val result = expr.evaluate()
+        val result = expr.evaluate(env)
         assertEquals("one2", result as String)
     }
 
@@ -42,7 +43,7 @@ internal class InterpreterTest {
     fun evaluateNullEquality() {
         val scanner = Scanner("nil == nil;")
         val expr = (Parser(scanner.scanTokens()).parse()[0] as ExpressionStmt).expression
-        val result = expr.evaluate()
+        val result = expr.evaluate(env)
         assertTrue(result as Boolean)
     }
 
@@ -50,7 +51,7 @@ internal class InterpreterTest {
     fun evaluateNullInEquality() {
         val scanner = Scanner("nil == \"str\";")
         val expr = (Parser(scanner.scanTokens()).parse()[0] as ExpressionStmt).expression
-        val result = expr.evaluate()
+        val result = expr.evaluate(env)
         assertFalse(result as Boolean)
     }
     @Test
@@ -58,7 +59,7 @@ internal class InterpreterTest {
         val scanner = Scanner("5/(3-3.0);")
         val expr = (Parser(scanner.scanTokens()).parse()[0] as ExpressionStmt).expression
         val e = assertThrows(RuntimeError::class.java) {
-            expr.evaluate()
+            expr.evaluate(env)
         }
         assertEquals(TokenType.SLASH, e.token.type)
     }
@@ -66,44 +67,31 @@ internal class InterpreterTest {
     fun evaluateCommaExpression() {
         val scanner = Scanner("5+3*(-1/10), 52, 3.0>1.0, \"str\" == nil;")
         val expr = (Parser(scanner.scanTokens()).parse()[0] as ExpressionStmt).expression
-        val result = expr.evaluate()
+        val result = expr.evaluate(env)
         assertFalse(result as Boolean)
     }
     @Test
     fun evaluateTernaryExpressionTruePart() {
         val scanner = Scanner("3.0>1.0 ? \"str\" == nil : 10/2*5;")
         val expr = (Parser(scanner.scanTokens()).parse()[0] as ExpressionStmt).expression
-        val result = expr.evaluate()
+        val result = expr.evaluate(env)
         assertFalse(result as Boolean)
     }
     @Test
     fun evaluateTernaryExpressionFalsePart() {
         val scanner = Scanner("3.0<1.0 ? \"str\" == nil : 15, 10/(2*5);")
         val expr = (Parser(scanner.scanTokens()).parse()[0] as ExpressionStmt).expression
-        val result = expr.evaluate()
+        val result = expr.evaluate(env)
         assertEquals(1.0, result as Double)
     }
     @Test
-    fun executeMultiStatements() {
-        val scanner = Scanner("10+12-2; print \"ha\";")
+    fun evaluateVarExpression() {
+        val scanner = Scanner("var pi = 22/7; pi;")
         val stmts = Parser(scanner.scanTokens()).parse()
-        assertEquals(2, stmts.size)
-        assertTrue(stmts[0] is ExpressionStmt)
-        assertTrue(stmts[1] is PrintStmt)
-    }
-    @Test
-    fun executeExprStatement() {
-        val scanner = Scanner("10+12*5;")
-        val stmts = Parser(scanner.scanTokens()).parse()
-        assertEquals(1, stmts.size)
-        assertTrue(stmts[0] is ExpressionStmt)
-    }
-    @Test
-    fun executePrintStatement() {
-        val scanner = Scanner("print 2*5;")
-        val stmts = Parser(scanner.scanTokens()).parse()
-        assertEquals(1, stmts.size)
-        assertTrue(stmts[0] is PrintStmt)
+        val interpreter = Interpreter()
+        interpreter.interpret(stmts)
+        assertTrue(stmts[0] is VarStmt)
+        assertEquals(22/7.0, interpreter.env.get(Token(TokenType.IDENTIFIER, "pi", null, 0)))
     }
 
 }

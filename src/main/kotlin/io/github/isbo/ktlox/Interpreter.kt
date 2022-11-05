@@ -2,13 +2,14 @@ package io.github.isbo.ktlox
 
 import io.github.isbo.ktlox.TokenType.*
 import java.lang.ClassCastException
-import java.lang.RuntimeException
 
 class Interpreter {
+    val env = Environment()
+
     fun interpret(statements: List<Stmt>) {
         try {
             for (statement in statements) {
-                statement.execute()
+                statement.execute(env)
             }
         } catch (e: RuntimeError) {
             runtimeError(e)
@@ -16,36 +17,55 @@ class Interpreter {
     }
 }
 
-class RuntimeError(val token: Token, override val message: String) : RuntimeException()
+fun ExpressionStmt.execute(env: Environment) {
+    expression.evaluate(env)
+}
 
-// TODO: revisit and remove?
-fun Expr.evaluate(): Any? {
-    return when (this) {
-        is TernaryExpr -> evaluate()
-        is CommaExpr -> evaluate()
-        is BinaryExpr -> evaluate()
-        is UnaryExpr -> evaluate()
-        is LiteralExpr -> value
-        is GroupingExpr -> evaluate()
+fun PrintStmt.execute(env: Environment) {
+    val result = expression.evaluate(env)
+    println(result)
+}
+
+fun VarStmt.execute(env: Environment) {
+    env.define(name.lexeme, initializer?.evaluate(env))
+}
+
+fun Stmt.execute(env: Environment) {
+    when (this) {
+        is PrintStmt -> execute(env)
+        is ExpressionStmt -> execute(env)
+        is VarStmt -> execute(env)
     }
 }
 
-fun TernaryExpr.evaluate(): Any? {
-    return if (condition.evaluate().isTruthy()) trueExpr.evaluate() else falseExpr.evaluate()
+fun Expr.evaluate(env: Environment): Any? {
+    return when (this) {
+        is TernaryExpr -> evaluate(env)
+        is CommaExpr -> evaluate(env)
+        is BinaryExpr -> evaluate(env)
+        is UnaryExpr -> evaluate(env)
+        is LiteralExpr -> value
+        is VariableExpr -> evaluate(env)
+        is GroupingExpr -> evaluate(env)
+    }
 }
 
-fun CommaExpr.evaluate(): Any? {
+fun TernaryExpr.evaluate(env: Environment): Any? {
+    return if (condition.evaluate(env).isTruthy()) trueExpr.evaluate(env) else falseExpr.evaluate(env)
+}
+
+fun CommaExpr.evaluate(env: Environment): Any? {
     // evaluate all, return last expression's value
     var result: Any? = null
     for (expr in expressions) {
-        result = expr.evaluate()
+        result = expr.evaluate(env)
     }
     return result
 }
 
-fun BinaryExpr.evaluate(): Any? {
-    val left = left.evaluate()
-    val right = right.evaluate()
+fun BinaryExpr.evaluate(env: Environment): Any? {
+    val left = left.evaluate(env)
+    val right = right.evaluate(env)
 
     try {
         return when (operator.type) {
@@ -64,6 +84,7 @@ fun BinaryExpr.evaluate(): Any? {
                     throw RuntimeError(operator, "Denominator must be non-zero")
                 left as Double / right
             }
+
             STAR -> left as Double * right as Double
             GREATER -> left as Double > right as Double
             GREATER_EQUAL -> left as Double >= right as Double
@@ -78,13 +99,12 @@ fun BinaryExpr.evaluate(): Any? {
     }
 }
 
-
-fun GroupingExpr.evaluate(): Any? {
-    return expr.evaluate()
+fun GroupingExpr.evaluate(env: Environment): Any? {
+    return expr.evaluate(env)
 }
 
-fun UnaryExpr.evaluate(): Any? {
-    val right = right.evaluate()
+fun UnaryExpr.evaluate(env: Environment): Any? {
+    val right = right.evaluate(env)
 
     try {
         if (operator.type == MINUS) {
@@ -97,6 +117,10 @@ fun UnaryExpr.evaluate(): Any? {
         return !right.isTruthy()
     }
     return null // unreachable
+}
+
+fun VariableExpr.evaluate(env: Environment): Any? {
+    return env.get(name)
 }
 
 fun Any?.isTruthy(): Boolean {

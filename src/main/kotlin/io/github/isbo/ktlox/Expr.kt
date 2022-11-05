@@ -8,6 +8,7 @@ data class BinaryExpr(val left: Expr, val operator: Token, val right: Expr) : Ex
 data class UnaryExpr(val operator: Token, val right: Expr) : Expr()
 data class LiteralExpr(val value: Any?) : Expr()
 data class GroupingExpr(val expr: Expr) : Expr()
+data class VariableExpr(val name: Token) : Expr()
 
 fun Expr.astPrinter(): String {
     return when(this) {
@@ -17,6 +18,7 @@ fun Expr.astPrinter(): String {
         is UnaryExpr -> parenthesize(operator.lexeme, right)
         is LiteralExpr -> value.toString()
         is GroupingExpr -> parenthesize("group", expr)
+        is VariableExpr -> parenthesize(name.lexeme)
     }
 }
 

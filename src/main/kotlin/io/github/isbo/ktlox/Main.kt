@@ -8,6 +8,7 @@ import kotlin.system.exitProcess
 var hadError = false
 var hadRuntimeError = false
 
+val interpreter = Interpreter()
 fun main(args: Array<String>) {
     if (args.size > 1) {
         println("Usage: ktlox [script]")
@@ -35,7 +36,6 @@ private fun run(source: String) {
     if (hadError) {
         return
     }
-    val interpreter = Interpreter()
     interpreter.interpret(statements)
 }
 
@@ -47,7 +47,6 @@ private fun runPrompt() {
         hadError = false
     }
 }
-
 
 fun Any?.toString(): String {
     return when(this) {

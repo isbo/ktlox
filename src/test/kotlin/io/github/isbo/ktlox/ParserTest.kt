@@ -28,11 +28,51 @@ internal class ParserTest {
         assertTrue(expr is TernaryExpr)
     }
     @Test
-    fun parseStatementWithoutCommaThrows() {
+    fun scanVarStatement() {
+        val scanner = Scanner("var pi = 3.14;")
+        val stmt = Parser(scanner.scanTokens()).parse()[0]
+        assertTrue(stmt is VarStmt)
+        val expected = VarStmt(
+            Token(TokenType.IDENTIFIER, "pi", null, 1),
+            LiteralExpr(3.14)
+        )
+        assertEquals(expected, stmt)
+    }
+    @Test
+    fun parseStatementWithoutComma() {
         val scanner = Scanner("10+12-2")
-        assertThrows(ParseError::class.java) {
-            Parser(scanner.scanTokens()).parse()
-        }
+        val statements = Parser(scanner.scanTokens()).parse()
+        assertTrue(statements.isEmpty())
+    }
+   @Test
+    fun parseMultiStatements() {
+        val scanner = Scanner("10+12-2; print \"ha\";")
+        val stmts = Parser(scanner.scanTokens()).parse()
+        assertEquals(2, stmts.size)
+        assertTrue(stmts[0] is ExpressionStmt)
+        assertTrue(stmts[1] is PrintStmt)
+    }
+    @Test
+    fun parseVarStatements() {
+        val scanner = Scanner("val i = 10+12-2; i;")
+        val stmts = Parser(scanner.scanTokens()).parse()
+        assertEquals(2, stmts.size)
+        assertTrue(stmts[0] is ExpressionStmt)
+        assertTrue(stmts[1] is PrintStmt)
+    }
+    @Test
+    fun parseExprStatement() {
+        val scanner = Scanner("10+12*5;")
+        val stmts = Parser(scanner.scanTokens()).parse()
+        assertEquals(1, stmts.size)
+        assertTrue(stmts[0] is ExpressionStmt)
+    }
+    @Test
+    fun parsePrintStatement() {
+        val scanner = Scanner("print 2*5;")
+        val stmts = Parser(scanner.scanTokens()).parse()
+        assertEquals(1, stmts.size)
+        assertTrue(stmts[0] is PrintStmt)
     }
 
 }
