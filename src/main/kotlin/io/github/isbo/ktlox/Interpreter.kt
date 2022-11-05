@@ -40,6 +40,7 @@ fun Stmt.execute(env: Environment) {
 
 fun Expr.evaluate(env: Environment): Any? {
     return when (this) {
+        is AssignExpr -> evaluate(env)
         is TernaryExpr -> evaluate(env)
         is CommaExpr -> evaluate(env)
         is BinaryExpr -> evaluate(env)
@@ -48,6 +49,12 @@ fun Expr.evaluate(env: Environment): Any? {
         is VariableExpr -> evaluate(env)
         is GroupingExpr -> evaluate(env)
     }
+}
+
+fun AssignExpr.evaluate(env: Environment): Any? {
+    val rhs = value.evaluate(env)
+    env.assign(name, rhs)
+    return rhs
 }
 
 fun TernaryExpr.evaluate(env: Environment): Any? {

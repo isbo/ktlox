@@ -12,4 +12,12 @@ class Environment {
 
         throw RuntimeError(token, "Variable '${token.lexeme}' is not defined.")
     }
+
+    fun assign(name: Token, value: Any?) {
+        if (name.lexeme in values) {
+            define(name.lexeme, value)
+            return
+        }
+        throw RuntimeError(name, "Undefined variable '${name.lexeme}'.")
+    }
 }

@@ -61,7 +61,19 @@ class Parser(private val tokens: List<Token>) {
     }
 
     private fun expression(): Expr {
-        return ternary()
+        return assignment()
+    }
+
+    private fun assignment(): Expr {
+        val expr = ternary()
+
+        if (match(EQUAL)) {
+            if (expr is VariableExpr) {
+                return AssignExpr(expr.name, ternary())
+            }
+            error(previous(), "invalid assignment target.")
+        }
+        return expr
     }
 
     private fun ternary(): Expr {
