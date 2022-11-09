@@ -1,16 +1,18 @@
 package io.github.isbo.ktlox
 
-class Environment {
+class Environment(private val enclosingEnv: Environment? = null) {
     private val values = mutableMapOf<String, Any?>()
 
     fun define(name: String, value: Any?) {
         values[name] = value
     }
 
-    fun get(token: Token): Any? {
-        if (token.lexeme in values) return values[token.lexeme]
+    fun get(name: Token): Any? {
+        if (name.lexeme in values) return values[name.lexeme]
 
-        throw RuntimeError(token, "Variable '${token.lexeme}' is not defined.")
+        if (enclosingEnv != null) return enclosingEnv.get(name)
+
+        throw RuntimeError(name, "Variable '${name.lexeme}' is not defined.")
     }
 
     fun assign(name: Token, value: Any?) {
@@ -18,6 +20,8 @@ class Environment {
             define(name.lexeme, value)
             return
         }
+        enclosingEnv?.assign(name, value)
+
         throw RuntimeError(name, "Undefined variable '${name.lexeme}'.")
     }
 }

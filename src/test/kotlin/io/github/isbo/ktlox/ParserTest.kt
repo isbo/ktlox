@@ -54,11 +54,11 @@ internal class ParserTest {
     }
     @Test
     fun parseVarStatements() {
-        val scanner = Scanner("val i = 10+12-2; i;")
+        val scanner = Scanner("var i = 10+12-2; i;")
         val stmts = Parser(scanner.scanTokens()).parse()
         assertEquals(2, stmts.size)
-        assertTrue(stmts[0] is ExpressionStmt)
-        assertTrue(stmts[1] is PrintStmt)
+        assertTrue(stmts[0] is VarStmt)
+        assertTrue(stmts[1] is ExpressionStmt)
     }
     @Test
     fun parseExprStatement() {

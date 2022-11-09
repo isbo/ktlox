@@ -3,13 +3,13 @@ package io.github.isbo.ktlox
 import io.github.isbo.ktlox.TokenType.*
 import java.lang.ClassCastException
 
-class Interpreter {
+class Interpreter(printer: (message: Any?) -> Unit = ::println, replMode: Boolean = false) {
     val env = Environment()
-
+    private val context = RuntimeContext(env, printer, replMode)
     fun interpret(statements: List<Stmt>) {
         try {
             for (statement in statements) {
-                statement.execute(env)
+                statement.execute(context)
             }
         } catch (e: RuntimeError) {
             runtimeError(e)
@@ -17,24 +17,37 @@ class Interpreter {
     }
 }
 
-fun ExpressionStmt.execute(env: Environment) {
-    expression.evaluate(env)
+data class RuntimeContext(val env: Environment, val printer: (message: Any?) -> Unit, val replMode: Boolean)
+
+fun ExpressionStmt.execute(ctxt: RuntimeContext) {
+    val result = expression.evaluate(ctxt.env)
+    if (ctxt.replMode) {
+        ctxt.printer(result)
+    }
 }
 
-fun PrintStmt.execute(env: Environment) {
-    val result = expression.evaluate(env)
-    println(result)
+fun PrintStmt.execute(ctxt: RuntimeContext) {
+    val result = expression.evaluate(ctxt.env)
+    ctxt.printer(result)
 }
 
-fun VarStmt.execute(env: Environment) {
-    env.define(name.lexeme, initializer?.evaluate(env))
+fun VarStmt.execute(ctxt: RuntimeContext) {
+    ctxt.env.define(name.lexeme, initializer?.evaluate(ctxt.env))
 }
 
-fun Stmt.execute(env: Environment) {
+fun BlockStmt.execute(ctxt: RuntimeContext) {
+    val newCtxt = RuntimeContext(Environment(ctxt.env), ctxt.printer, ctxt.replMode)
+    for (stmt in statements) {
+        stmt.execute(newCtxt)
+    }
+}
+
+fun Stmt.execute(ctxt: RuntimeContext) {
     when (this) {
-        is PrintStmt -> execute(env)
-        is ExpressionStmt -> execute(env)
-        is VarStmt -> execute(env)
+        is PrintStmt -> execute(ctxt)
+        is ExpressionStmt -> execute(ctxt)
+        is VarStmt -> execute(ctxt)
+        is BlockStmt -> execute(ctxt)
     }
 }
 

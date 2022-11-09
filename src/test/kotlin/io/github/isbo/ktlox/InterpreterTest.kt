@@ -8,10 +8,14 @@ import org.junit.jupiter.api.BeforeEach
 internal class InterpreterTest {
     private var interpreter: Interpreter? = null
     private var env: Environment? = null
+    private val ac = mutableListOf<String>()
+    private var printer: (message: Any?) -> Unit = { message -> ac.add(message.toString()) }
+
     @BeforeEach
     fun setup() {
-        interpreter = Interpreter()
+        interpreter = Interpreter(printer = printer)
         env = Environment()
+        ac.clear()
     }
     @Test
     fun evaluateNumeric() {
@@ -105,6 +109,32 @@ internal class InterpreterTest {
         interpreter!!.interpret(stmts)
         assertTrue(stmts[0] is VarStmt)
         assertEquals(2.0, interpreter!!.env.get(Token(TokenType.IDENTIFIER, "pi", null, 0)))
+    }
+    @Test
+    fun evaluateBlockVariableScope() {
+        val scanner = Scanner("""var a = "global a";
+            var b = "global b";
+            var c = "global c";
+            {
+              var a = "outer a";
+              var b = "outer b";
+              {
+                var a = "inner a";
+                print a;
+                print b;
+                print c;
+              }
+              print a;
+              print b;
+              print c;
+            }
+            print a;
+            print b;
+            print c;""")
+        val stmts = Parser(scanner.scanTokens()).parse()
+        interpreter!!.interpret(stmts)
+        assertEquals(listOf("inner a", "outer b", "global c", "outer a", "outer b", "global c",
+        "global a", "global b", "global c"), ac)
     }
 
     /* TODO: uncomment when we can catch errors via API
