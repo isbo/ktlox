@@ -4,8 +4,8 @@ import io.github.isbo.ktlox.TokenType.*
 import java.lang.ClassCastException
 
 class Interpreter(printer: (message: Any?) -> Unit = ::println, replMode: Boolean = false) {
-    val env = Environment()
-    private val context = RuntimeContext(env, printer, replMode)
+    private val context = RuntimeContext(Environment(), { message -> printer(message.toLoxString()) }, replMode)
+
     fun interpret(statements: List<Stmt>) {
         try {
             for (statement in statements) {
@@ -148,4 +148,15 @@ fun Any?.isTruthy(): Boolean {
     if (this is Boolean) return this
 
     return true
+}
+
+fun Any?.toLoxString(): String {
+    return when(this) {
+        null -> "nil"
+        is Double -> {
+            val str = toString()
+            if (str.endsWith(".0")) str.slice(0..str.length-3) else str
+        }
+        else -> toString()
+    }
 }

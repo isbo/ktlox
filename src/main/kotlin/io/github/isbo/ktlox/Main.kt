@@ -50,17 +50,6 @@ private fun runPrompt() {
     }
 }
 
-fun Any?.toString(): String {
-    return when(this) {
-        null -> "nil"
-        is Double -> {
-            val str = toString()
-            if (str.endsWith(".0")) str.slice(0..str.length-3) else str
-        }
-        else -> toString()
-    }
-}
-
 fun error(line: Int, message: String) {
     report(line, "", message)
 }
