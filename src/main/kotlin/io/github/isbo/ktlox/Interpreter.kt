@@ -42,12 +42,20 @@ fun BlockStmt.execute(ctxt: RuntimeContext) {
     }
 }
 
+fun IfStmt.execute(ctxt: RuntimeContext) {
+    if (condition.evaluate(ctxt.env).isTruthy())
+        thenBranch.execute(ctxt)
+    else
+        elseBranch?.execute(ctxt)
+}
+
 fun Stmt.execute(ctxt: RuntimeContext) {
     when (this) {
         is PrintStmt -> execute(ctxt)
         is ExpressionStmt -> execute(ctxt)
         is VarStmt -> execute(ctxt)
         is BlockStmt -> execute(ctxt)
+        is IfStmt -> execute(ctxt)
     }
 }
 
@@ -93,7 +101,7 @@ fun BinaryExpr.evaluate(env: Environment): Any? {
                 if (left is Double && right is Double)
                     left + right
                 else if (left is String || right is String)
-                    left.toString() + right.toString()
+                    left.toLoxString() + right.toLoxString()
                 else throw RuntimeError(operator, "Operands must be numbers or strings")
             }
 

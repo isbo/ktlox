@@ -96,19 +96,17 @@ internal class InterpreterTest {
     }
     @Test
     fun evaluateVarExpression() {
-        val scanner = Scanner("var pi = 22/7; pi;")
+        val scanner = Scanner("var pi = 22/7; print(pi);")
         val stmts = Parser(scanner.scanTokens()).parse()
         interpreter!!.interpret(stmts)
-        assertTrue(stmts[0] is VarStmt)
-        assertEquals(22/7.0, interpreter!!.env.get(Token(TokenType.IDENTIFIER, "pi", null, 0)))
+        assertEquals(listOf("3.142857142857143"), ac)
     }
     @Test
     fun evaluateAssignment() {
-        val scanner = Scanner("var pi = 22/7; pi=2.0;")
+        val scanner = Scanner("var pi = 22/7; pi=2.0;print(pi);")
         val stmts = Parser(scanner.scanTokens()).parse()
         interpreter!!.interpret(stmts)
-        assertTrue(stmts[0] is VarStmt)
-        assertEquals(2.0, interpreter!!.env.get(Token(TokenType.IDENTIFIER, "pi", null, 0)))
+        assertEquals(listOf("2"), ac)
     }
     @Test
     fun evaluateBlockVariableScope() {
@@ -136,6 +134,22 @@ internal class InterpreterTest {
         assertEquals(listOf("inner a", "outer b", "global c", "outer a", "outer b", "global c",
         "global a", "global b", "global c"), ac)
     }
+
+    @Test
+    fun evaluateNestedIfElse() {
+         val scanner = Scanner("""var a = 5;
+            if (a < 10)
+                if (a > 6) {
+                    print("false");
+                } else {
+                    print("true");
+                }
+            """)
+        val stmts = Parser(scanner.scanTokens()).parse()
+        interpreter!!.interpret(stmts)
+        assertEquals(listOf("true"), ac)
+    }
+
 
     /* TODO: uncomment when we can catch errors via API
    @Test
