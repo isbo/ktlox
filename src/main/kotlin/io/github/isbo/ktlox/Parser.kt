@@ -88,39 +88,59 @@ class Parser(private val tokens: List<Token>) {
     }
 
     private fun assignment(): Expr {
-        val expr = ternary()
+        val expr = comma()
 
         if (match(EQUAL)) {
             if (expr is VariableExpr) {
-                return AssignExpr(expr.name, ternary())
+                return AssignExpr(expr.name, comma())
             }
             error(previous(), "invalid assignment target.")
         }
         return expr
     }
 
+    // comma has the lowest precedence - https://en.wikipedia.org/wiki/Comma_operator
+    private fun comma(): Expr {
+        var expr = ternary()
+
+        while (match(COMMA)) {
+            val operator = previous()
+            expr = CommaExpr(expr, operator, ternary())
+        }
+        return expr
+    }
+
+    // FIXME - this is buggy precedence-wise
     private fun ternary(): Expr {
-        var expr = comma()
+        var expr = or()
 
         if (match(QUESTION)) {
             val operator = previous()
-            val trueExpr = comma()
+            val trueExpr = or()
             consumeOrThrow(COLON, "Expected ':' in ternary expression.")
-            val falseExpr = comma()
+            val falseExpr = or()
             expr = TernaryExpr(operator, expr, trueExpr, falseExpr)
         }
         return expr
     }
 
-    private fun comma(): Expr {
-        val expressions = mutableListOf<Expr>(equality())
+    private fun or(): Expr {
+        var expr = and()
 
-        var operator: Token? = null
-        while (match(COMMA)) {
-            operator = previous()
-            expressions.add(equality())
+        while (match(OR)) {
+            val operator = previous()
+            expr = LogicalExpr(expr, operator, and())
         }
-        return if (operator == null) expressions[0] else CommaExpr(operator, expressions)
+        return expr
+    }
+
+    private fun and(): Expr {
+        var expr = equality()
+        while (match(AND)) {
+            val operator = previous()
+            expr = LogicalExpr(expr, operator, equality())
+        }
+        return expr
     }
 
     private fun equality(): Expr {

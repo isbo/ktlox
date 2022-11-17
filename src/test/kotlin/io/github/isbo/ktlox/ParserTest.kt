@@ -18,7 +18,6 @@ internal class ParserTest {
         val scanner = Scanner("5+3*(-1/10), 52, 3.0>1.0, \"str\" == nil;")
         val expr = (Parser(scanner.scanTokens()).parse()[0] as ExpressionStmt).expression
         assertTrue(expr is CommaExpr)
-        assertEquals(4, (expr as CommaExpr).expressions.size)
     }
 
     @Test

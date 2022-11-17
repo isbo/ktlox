@@ -150,6 +150,13 @@ internal class InterpreterTest {
         assertEquals(listOf("true"), ac)
     }
 
+    @Test
+    fun evaluateLogicalOr() {
+        val scanner = Scanner("""print "hi" or 5 and nil;""")
+        val stmts = Parser(scanner.scanTokens()).parse()
+        interpreter!!.interpret(stmts)
+        assertEquals(listOf("hi"), ac)
+    }
 
     /* TODO: uncomment when we can catch errors via API
    @Test

@@ -62,8 +62,9 @@ fun Stmt.execute(ctxt: RuntimeContext) {
 fun Expr.evaluate(env: Environment): Any? {
     return when (this) {
         is AssignExpr -> evaluate(env)
-        is TernaryExpr -> evaluate(env)
         is CommaExpr -> evaluate(env)
+        is TernaryExpr -> evaluate(env)
+        is LogicalExpr -> evaluate(env)
         is BinaryExpr -> evaluate(env)
         is UnaryExpr -> evaluate(env)
         is LiteralExpr -> value
@@ -84,11 +85,19 @@ fun TernaryExpr.evaluate(env: Environment): Any? {
 
 fun CommaExpr.evaluate(env: Environment): Any? {
     // evaluate all, return last expression's value
-    var result: Any? = null
-    for (expr in expressions) {
-        result = expr.evaluate(env)
+    left.evaluate(env)
+    return right.evaluate(env)
+}
+
+// Instead of promising to literally return true or false,
+// a logic operator merely guarantees it will return a truthy value
+fun LogicalExpr.evaluate(env: Environment): Any? {
+    val leftVal = left.evaluate(env)
+    return if (operator.type == OR) {
+        if (leftVal.isTruthy()) leftVal else right.evaluate(env)
+    } else {
+        if (!leftVal.isTruthy()) leftVal else right.evaluate(env)
     }
-    return result
 }
 
 fun BinaryExpr.evaluate(env: Environment): Any? {
