@@ -48,6 +48,11 @@ fun IfStmt.execute(ctxt: RuntimeContext) {
     else
         elseBranch?.execute(ctxt)
 }
+fun WhileStmt.execute(ctxt: RuntimeContext) {
+    while (condition.evaluate(ctxt.env).isTruthy()) {
+        body.execute(ctxt)
+    }
+}
 
 fun Stmt.execute(ctxt: RuntimeContext) {
     when (this) {
@@ -56,6 +61,7 @@ fun Stmt.execute(ctxt: RuntimeContext) {
         is VarStmt -> execute(ctxt)
         is BlockStmt -> execute(ctxt)
         is IfStmt -> execute(ctxt)
+        is WhileStmt -> execute(ctxt)
     }
 }
 

@@ -16,12 +16,11 @@ class Environment(private val enclosingEnv: Environment? = null) {
     }
 
     fun assign(name: Token, value: Any?) {
-        if (name.lexeme in values) {
+        if (name.lexeme in values)
             define(name.lexeme, value)
-            return
-        }
-        enclosingEnv?.assign(name, value)
-
-        throw RuntimeError(name, "Undefined variable '${name.lexeme}'.")
+        else if (enclosingEnv != null)
+            enclosingEnv?.assign(name, value)
+        else
+            throw RuntimeError(name, "Undefined variable '${name.lexeme}'.")
     }
 }
