@@ -170,6 +170,20 @@ internal class InterpreterTest {
         interpreter!!.interpret(stmts)
         assertEquals(listOf("15"), ac)
     }
+    @Test
+    fun evaluateFor() {
+        val scanner = Scanner("""var a = 0; var b=5; var c = 0;
+            for (var i = 0; i < 5;i=i+1) {
+                a = a+1;
+                c = c+a;
+            }
+            print c;
+            """)
+        val stmts = Parser(scanner.scanTokens()).parse()
+        interpreter!!.interpret(stmts)
+        assertEquals(listOf("15"), ac)
+    }
+
 
     /* TODO: uncomment when we can catch errors via API
    @Test

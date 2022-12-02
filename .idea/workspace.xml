@@ -6,10 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="7f05cc0a-afee-416a-bd20-447798cfecc2" name="Changes" comment="support logical and/or expressions; fix comma operator repr/parsing">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Environment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Environment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Interpreter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Interpreter.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Parser.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Parser.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Stmt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Stmt.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/kotlin/io/github/isbo/ktlox/InterpreterTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/io/github/isbo/ktlox/InterpreterTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -79,11 +76,26 @@
       <recent name="io.github.isbo.ktlox" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.InterpreterTest.evaluateWhile">
+  <component name="RunManager" selected="JUnit.InterpreterTest (1)">
     <configuration name="Ktlox" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="io.github.isbo.ktlox.MainKt" />
       <module name="ktlox" />
       <option name="PROGRAM_PARAMETERS" value="test.ktlox" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="InterpreterTest (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ktlox" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.github.isbo.ktlox.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="io.github.isbo.ktlox" />
+      <option name="MAIN_CLASS_NAME" value="io.github.isbo.ktlox.InterpreterTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -118,7 +130,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="InterpreterTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="InterpreterTest.evaluateFor" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ktlox" />
       <extension name="coverage">
         <pattern>
@@ -128,22 +140,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="io.github.isbo.ktlox" />
       <option name="MAIN_CLASS_NAME" value="io.github.isbo.ktlox.InterpreterTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="InterpreterTest.evaluateLogicalOr" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="ktlox" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="io.github.isbo.ktlox.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="io.github.isbo.ktlox" />
-      <option name="MAIN_CLASS_NAME" value="io.github.isbo.ktlox.InterpreterTest" />
-      <option name="METHOD_NAME" value="evaluateLogicalOr" />
+      <option name="METHOD_NAME" value="evaluateFor" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -167,19 +164,19 @@
     </configuration>
     <list>
       <item itemvalue="Application.Ktlox" />
+      <item itemvalue="JUnit.InterpreterTest (1)" />
+      <item itemvalue="JUnit.InterpreterTest.evaluateFor" />
       <item itemvalue="JUnit.InterpreterTest (2)" />
       <item itemvalue="JUnit.InterpreterTest.evaluateWhile" />
       <item itemvalue="JUnit.InterpreterTest (4)" />
-      <item itemvalue="JUnit.InterpreterTest.evaluateLogicalOr" />
-      <item itemvalue="JUnit.InterpreterTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.InterpreterTest (1)" />
+        <item itemvalue="JUnit.InterpreterTest.evaluateFor" />
         <item itemvalue="JUnit.InterpreterTest.evaluateWhile" />
         <item itemvalue="JUnit.InterpreterTest (2)" />
         <item itemvalue="JUnit.InterpreterTest (4)" />
-        <item itemvalue="JUnit.InterpreterTest.evaluateLogicalOr" />
-        <item itemvalue="JUnit.InterpreterTest" />
       </list>
     </recent_temporary>
   </component>
@@ -387,8 +384,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/test/kotlin/io/github/isbo/ktlox/InterpreterTest.kt</url>
-          <line>157</line>
+          <line>149</line>
           <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Parser.kt</url>
+          <line>57</line>
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-function">
           <url>file://$PROJECT_DIR$/src/main/kotlin/io/github/isbo/ktlox/Interpreter.kt</url>
